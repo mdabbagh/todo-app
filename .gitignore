@@ -128,3 +128,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# App databases
+todo_db.json
+todo_test_db.json
+
+.DS_Store
