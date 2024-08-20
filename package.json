@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test-clean-run": "rm -rf todo_test_db.json && jest",
     "server-start": "node server/server.js"
   },
   "keywords": [],
