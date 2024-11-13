@@ -26,6 +26,7 @@ function App() {
                 ) : (
                     <>
                         <Route path="/" element={<Home token={token} />} />
+                        <Route path="/completed" element={<Completed token={token} />} />
                         {/* <Route path="/completed" element={<Completed token={token} />} /> */}
                         <Route path="*" element={<Navigate to="/" />} />
                     </>

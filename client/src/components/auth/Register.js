@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { TextField, Button, Container, Grid } from '@mui/material';
+import { TextField, Button, Container } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import { register } from '../../api';
 
 export default function Register({ setToken }) {
@@ -9,8 +10,9 @@ export default function Register({ setToken }) {
 
     const handleRegister = async () => {
         try {
-            if(password == confirmPassword) {
+            if(password === confirmPassword) {
                 await register(username, password);
+                localStorage.setItem('username', username);
             } else {
                 alert("Password and confirm password must match");
                 setPassword('');
@@ -25,7 +27,7 @@ export default function Register({ setToken }) {
         <Container maxWidth="sm">
             <h2>Register</h2>
             <Grid container spacing={2} alignItems="center" justifyContent="center">
-                <Grid item xs={12}>
+                <Grid size={12}>
                     <TextField
                         label="Username"
                         value={username}
@@ -33,7 +35,7 @@ export default function Register({ setToken }) {
                         fullWidth
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                     <TextField
                         label="Password"
                         type="password"
@@ -42,7 +44,7 @@ export default function Register({ setToken }) {
                         fullWidth
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                     <TextField
                         label="Confirm Password"
                         type="password"
@@ -51,10 +53,13 @@ export default function Register({ setToken }) {
                         fullWidth
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                     <Button variant="contained" onClick={handleRegister}>
                         Register
                     </Button>
+                </Grid>
+                <Grid size={12}>
+                    <a href={`/login`}>Login</a>
                 </Grid>
             </Grid>
         </Container>

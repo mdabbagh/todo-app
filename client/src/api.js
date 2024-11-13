@@ -41,7 +41,7 @@ export const getTodos = async (token) => {
 }
 
 export const completeTodo = async (id, token) => {
-    return axios.put(`${API_URL}/todos/complete/${id}`, {
+    return axios.put(`${API_URL}/todos/complete/${id}`, {}, {
         headers: { Authorization: `Bearer ${token}`}
     });
 }

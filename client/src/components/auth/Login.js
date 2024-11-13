@@ -11,6 +11,7 @@ export default function Login({ setToken }) {
         try {
             const response = await login(username, password);
             setToken(response.data.token);
+            localStorage.setItem('username', username);
         } catch (error) {
             console.error('Registration failed', error);
         }
@@ -45,6 +46,9 @@ export default function Login({ setToken }) {
                     >
                         Login
                     </Button>
+                </Grid>
+                <Grid size={12}>
+                    <a href={`/register`}>Need an account?</a>
                 </Grid>
             </Grid>
         </Container>

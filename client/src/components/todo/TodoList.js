@@ -1,6 +1,6 @@
 // src/components/Todo/TodoList.js
-import React, { useEffect, useState } from 'react';
-import { List, Container, TextField, Button, FormControl, Select, MenuItem, InputLabel } from '@mui/material';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Container, TextField, Button, FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import TodoItem from './TodoItem';
 import Grid from '@mui/material/Grid2';
 import Table from '@mui/material/Table';
@@ -15,10 +15,11 @@ export default function TodoList({ token }) {
     const [title, setTitle] = useState('');
     const [priority, setPriority] = useState('');
 
-    const fetchTodos = async () => {
+    const fetchTodos = useCallback(async () => {
         const response = await getTodos(token);
-        setTodos(response.data);
-    };
+        const todosNotCompleted = response.data.filter(f => f.completedAt === null);
+        setTodos(todosNotCompleted);
+    }, [token]);
 
     const handleAddTodo = async () => {
         await addTodo(title, priority, token);
@@ -29,10 +30,10 @@ export default function TodoList({ token }) {
 
     useEffect(() => {
         fetchTodos();
-    }, []);
+    }, [fetchTodos]);
 
     return (
-        <Container justifyContent="center">
+        <Container >
             <Grid display="flex" container spacing={2} alignItems="center" justifyContent="center">
                 <Grid display="flex" size={8}>
                     <h2>Your Todos</h2>
@@ -47,11 +48,11 @@ export default function TodoList({ token }) {
                     />
                 </Grid>
                 <Grid size={8}>
-                    <FormControl id="input_priority" fullWidth>
-                        <InputLabel id="input_priority_2">Priority</InputLabel>
+                    <FormControl id="input_priority_form_control" fullWidth>
+                        <InputLabel id="input_priority_label">Priority</InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
+                            labelId="priority_select_label"
+                            id="priority_select"
                             value={priority}
                             label="Priority"
                             onChange={(e) => setPriority(e.target.value)}
@@ -77,7 +78,7 @@ export default function TodoList({ token }) {
                         <Table sx={{ minWidth: 650 }} aria-label="simple table" id="todo_table">
                             <TableBody>
                             {todos.map((todo) => (
-                                <TodoItem key={todo.id} todo={todo} token={token} fetchTodos={fetchTodos} />
+                                <TodoItem key={todo.id} todo={todo} token={token} fetchTodos={fetchTodos} showCompleted={false}/>
                             ))}
                             </TableBody>
                         </Table>
