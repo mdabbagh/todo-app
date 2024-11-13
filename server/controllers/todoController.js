@@ -30,9 +30,16 @@ const addTodo = async (req, res) => {
 
 const getTodos = async (req, res) => {
     try {
+        const userTodosPath = `/todos/${req.user}`;
+        if (!db.exists(userTodosPath)) {
+            // If no todos exist for the user, return an empty array
+            return res.status(200).json([]);
+        }
+        
         const todos = await db.getData(`/todos/${req.user}`);
         res.status(200).json(todos);
     } catch (error) {
+        console.log(error);
         res.status(400).send('No todos found');
     }
 };
@@ -93,6 +100,12 @@ const completeTodo = async (req, res) => {
 
 const getCompletedTodos = async (req, res) => {
     try {
+        const userTodosPath = `/todos/${req.user}`;
+        if (!db.exists(userTodosPath)) {
+            // If no todos exist for the user, return an empty array
+            return res.status(200).json([]);
+        }
+
         const todos = await db.getData(`/todos/${req.user}`);
         const completedTodos = todos.filter(todo => todo.completed);
         res.status(200).json(completedTodos);

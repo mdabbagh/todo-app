@@ -29,7 +29,8 @@ const register = async (req, res) => {
         password: hashedPassword,
     };
 
-    db.push("/users[]", newUser);
+    await db.push("/users[]", newUser);
+    await db.push(`/todos/${username}`, []);
     res.status(201).send('User registered');
 };
 
@@ -52,7 +53,7 @@ const login = async (req, res) => {
     }
 
     // Return a new jwt to client
-    const token = jwt.sign({ id: user.username }, 'secret', { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.username }, 'THIS_IS_SECRET_BUT_WE_ARE_NOT_GOING_TO_PROD', { expiresIn: '23h' });
     res.status(201).json({ token });
 };
 
