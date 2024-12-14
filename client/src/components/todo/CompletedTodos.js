@@ -27,15 +27,18 @@ export default function Completed({ token }) {
         <Container >
             <Grid display="flex" container spacing={2} alignItems="center" justifyContent="center">
                 <Grid size={8}>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table" id="todo_table">
-                            <TableBody>
-                            {todos.map((todo) => (
-                                <TodoItem key={todo.id} todo={todo} token={token} fetchTodos={fetchTodos} showCompleted={true} />
-                            ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    {todos.length !== 0 ?
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }} aria-label="simple table" id="todo_table">
+                                <TableBody>
+                                    {todos.map((todo) => (
+                                        <TodoItem key={todo.id} todo={todo} token={token} fetchTodos={fetchTodos} showCompleted={true} />
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        : <h2> No completed todos</h2>
+                    }
                 </Grid>
             </Grid>
         </Container>
