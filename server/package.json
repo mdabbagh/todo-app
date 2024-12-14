@@ -3,17 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "workspaces": [
-    "client",
-    "server"
-  ],
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "client": "npm start --prefix client",
-    "server": "npm start --prefix server",
-    "install:all": "npm install --workspaces",
-    "build": "npm run build --prefix client && npm run build --prefix server",
-    "test": "npm test --workspaces"
+    "test-server": "cd server && jest",
+    "test-server-clean": "cd server && rm -rf todo_test_db.json && jest",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -29,7 +22,6 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "concurrently": "^9.1.0",
     "jest": "^29.7.0",
     "nodemon": "^3.1.4"
   }

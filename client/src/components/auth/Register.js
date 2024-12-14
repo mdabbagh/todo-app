@@ -11,7 +11,8 @@ export default function Register({ setToken }) {
     const handleRegister = async () => {
         try {
             if(password === confirmPassword) {
-                await register(username, password);
+                const response = await register(username, password);
+                setToken(response.data.token);
                 localStorage.setItem('username', username);
             } else {
                 alert("Password and confirm password must match");

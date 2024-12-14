@@ -13,7 +13,7 @@ export default function Login({ setToken }) {
             setToken(response.data.token);
             localStorage.setItem('username', username);
         } catch (error) {
-            console.error('Registration failed', error);
+            console.error('Login failed', error);
         }
     };
 

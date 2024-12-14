@@ -5,6 +5,9 @@ import TodoItem from './TodoItem';
 import Grid from '@mui/material/Grid2';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+import TableHead from '@mui/material/TableHead';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 
@@ -22,10 +25,14 @@ export default function TodoList({ token }) {
     }, [token]);
 
     const handleAddTodo = async () => {
-        await addTodo(title, priority, token);
-        setTitle('');
-        setPriority('');
-        fetchTodos();
+        if(title !== "" && priority !== "") {
+            await addTodo(title, priority, token);
+            setTitle('');
+            setPriority('');
+            fetchTodos();
+        } else {
+            window.alert("Title or priority cannot be empty");
+        }
     };
 
     useEffect(() => {
@@ -76,10 +83,17 @@ export default function TodoList({ token }) {
                 <Grid size={8}>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table" id="todo_table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="left"><b>Title</b></TableCell>
+                                    <TableCell align="left"><b>Priority</b></TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                            </TableHead>
                             <TableBody>
-                            {todos.map((todo) => (
-                                <TodoItem key={todo.id} todo={todo} token={token} fetchTodos={fetchTodos} showCompleted={false}/>
-                            ))}
+                                {todos.map((todo) => (
+                                    <TodoItem key={todo.id} todo={todo} token={token} fetchTodos={fetchTodos} showCompleted={false}/>
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
