@@ -20,16 +20,19 @@ describe('AuthController', () => {
             const req = { body: { username: 'test user' + id, password: 'testpassword' } };
             const res = {
                 status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
                 send: jest.fn()
             };
 
             bcrypt.genSalt.mockResolvedValue('salt');
             bcrypt.hash.mockResolvedValue('hashedPassword');
 
+            jwt.sign.mockReturnValue('jwt');
+
             await register(req, res);
 
             expect(res.status).toHaveBeenCalledWith(201);
-            expect(res.send).toHaveBeenCalledWith('User registered');
+            expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ token: 'jwt' }));
         })
     })
 

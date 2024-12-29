@@ -6,6 +6,7 @@ import { login } from '../../api';
 export default function Login({ setToken }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleLogin = async () => {
         try {
@@ -13,7 +14,7 @@ export default function Login({ setToken }) {
             setToken(response.data.token);
             localStorage.setItem('username', username);
         } catch (error) {
-            console.error('Login failed', error);
+            setError('Login failed. Check your username and password.');
         }
     };
 
@@ -23,6 +24,7 @@ export default function Login({ setToken }) {
             <Grid container spacing={2} alignItems="center" justifyContent="center">
                 <Grid size={12}>
                     <TextField
+                        id="username-input" 
                         label="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
@@ -31,6 +33,7 @@ export default function Login({ setToken }) {
                 </Grid>
                 <Grid size={12}>
                     <TextField
+                        id="password-input" 
                         label="Password"
                         type="password"
                         value={password}
@@ -38,8 +41,15 @@ export default function Login({ setToken }) {
                         fullWidth
                     />
                 </Grid>
+                {error && 
+                    <Grid size={12}>
+                        <p style={{ color: 'red' }}>{error}</p>
+                    </Grid>
+                
+                }
                 <Grid size={12}>
                     <Button 
+                        id="login-btn"
                         variant="contained" 
                         onClick={handleLogin} 
                         onKeyDown={e => e.key === 'Enter' ? handleLogin: ''}

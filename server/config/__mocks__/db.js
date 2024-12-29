@@ -20,6 +20,10 @@ class MockDB {
     delete(path) {
         this.db.delete(path);
     }
+
+    exists(path) {
+        return this.db.exists(path);
+    }
 }
 
 module.exports = new MockDB();
