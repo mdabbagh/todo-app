@@ -33,6 +33,7 @@ describe('TodoController', () => {
 
     it('should successfully get todos', async () => {
         id = uuidv4();
+        // Create a new todo
         const req = { user: 'testuser', body: { title: 'test todo' + id, priority: '1' }};
         const res = {
             status: jest.fn().mockReturnThis(),
@@ -42,7 +43,8 @@ describe('TodoController', () => {
 
         await addTodo(req, res);
         
-        const req2 = { user: 'testuser', body: { title: 'test todo' + id, priority: '1' }};
+        // Get todos
+        const req2 = { user: 'testuser'};
         const res2 = {
             status: jest.fn().mockReturnThis(),
             send: jest.fn(),
@@ -52,7 +54,6 @@ describe('TodoController', () => {
         await getTodos(req2, res2);
 
         expect(res2.status).toHaveBeenCalledWith(200);
-
         // Check if the response contains a todo with the correct title
         expect(res2.json).toHaveBeenCalledWith(
             expect.arrayContaining([

@@ -11,27 +11,42 @@ const register = async (req, res) => {
         return res.status(400).send('Please enter all fields');
     }
 
-    // Check if user exists before creating
-    const users = await db.getData("/users");
-    const userExists = users.some(user => user.username === username);
+    try {
+        // Ensure the /todos path exists
+        try {
+            await db.getData("/todos");
+        } catch (error) {
+            // Initialize /todos if it doesn't exist
+            await db.push("/todos", {});
+        }
+        
+        // Check if user exists before creating
+        const users = await db.getData("/users");
+        const userExists = users.some(user => user.username === username);
 
-    if (userExists) {
-        return res.status(400).send('User already exists');
+        if (userExists) {
+            return res.status(400).send('User already exists');
+        }
+
+        // Hash password before storing
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const newUser = {
+            id: uuidv4(),
+            username,
+            password: hashedPassword,
+        };
+
+        await db.push("/users[]", newUser);
+        await db.push(`/todos/${username}`, []);
+        const token = jwt.sign({ id: newUser.username }, 'THIS_IS_SECRET_BUT_WE_ARE_NOT_GOING_TO_PROD', { expiresIn: '23h' });
+        res.status(201).json({ 'token': token });
+    } catch (error) {
+
     }
 
-    // Hash password before storing
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const newUser = {
-        id: uuidv4(),
-        username,
-        password: hashedPassword,
-    };
-
-    await db.push("/users[]", newUser);
-    await db.push(`/todos/${username}`, []);
-    res.status(201).send('User registered');
+    
 };
 
 const login = async (req, res) => {

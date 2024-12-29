@@ -19,13 +19,14 @@ export default function TodoList({ token }) {
     const [priority, setPriority] = useState('');
 
     const fetchTodos = useCallback(async () => {
+        // Get all todos that are not completed
         const response = await getTodos(token);
         const todosNotCompleted = response.data.filter(f => f.completedAt === null);
         setTodos(todosNotCompleted);
     }, [token]);
 
     const handleAddTodo = async () => {
-        if(title !== "" && priority !== "") {
+        if(priority !== "") { // Lesson
             await addTodo(title, priority, token);
             setTitle('');
             setPriority('');
@@ -43,7 +44,7 @@ export default function TodoList({ token }) {
         <Container >
             <Grid display="flex" container spacing={2} alignItems="center" justifyContent="center">
                 <Grid display="flex" size={8}>
-                    <h2>Your Todos</h2>
+                    <h2>My Todos</h2>
                 </Grid>
                 <Grid display="flex" size={8}>
                     <TextField
